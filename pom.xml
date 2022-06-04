@@ -79,9 +79,9 @@
 <!--            <version>1.0.4</version>-->
 <!--        </dependency>-->
         <dependency>
-            <groupId>com.github.MAHAMAHAM</groupId>
+            <groupId>com.github.GitHub-Laziji</groupId>
             <artifactId>reverse-regexp</artifactId>
-            <version>1.0.4</version>
+            <version>master-b5d917454a-1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ant</groupId>
