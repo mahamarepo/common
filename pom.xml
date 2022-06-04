@@ -6,7 +6,7 @@
 
     <groupId>com.mahama</groupId>
     <artifactId>common</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.75</version>
+            <version>1.2.83</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
