@@ -1,13 +1,9 @@
 package com.mahama.common.utils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
  * 集合工具类
- *
- * @author enilu
  */
 public final class Lists {
 
@@ -67,7 +63,7 @@ public final class Lists {
         for (T t : list) {
 
             try {
-                R r = (R) getProperty(t, property);
+                R r = (R) FieldUtil.getProperty(t, property);
                 result.add(r);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -91,7 +87,7 @@ public final class Lists {
         for (V v : list) {
 
             try {
-                K k = (K) getProperty(v, keyProperty);
+                K k = (K) FieldUtil.getProperty(v, keyProperty);
                 map.put(k, v);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -109,8 +105,8 @@ public final class Lists {
         for (M m : list) {
 
             try {
-                K k = (K) getProperty(m, keyProperty);
-                V v = (V) getProperty(m, valueProperty);
+                K k = (K) FieldUtil.getProperty(m, keyProperty);
+                V v = (V) FieldUtil.getProperty(m, valueProperty);
                 map.put(k, v);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -133,7 +129,7 @@ public final class Lists {
         List<T> result = new ArrayList<T>();
         for (T t : list) {
             try {
-                Object v = getProperty(t, property);
+                Object v = FieldUtil.getProperty(t, property);
                 if ((v == null && value == null) || (v != null && v.equals(value))) {
                     result.add(t);
                 }
@@ -240,7 +236,7 @@ public final class Lists {
         for (V v : input) {
 
             try {
-                K k = (K) getProperty(v, keyProperty);
+                K k = (K) FieldUtil.getProperty(v, keyProperty);
                 List<V> list = result.get(k);
                 if (list == null) {
                     list = new ArrayList<>();
@@ -306,15 +302,15 @@ public final class Lists {
 
     private static <K, V> V addChildren(V vo, Map<K, V> map, String keyProperty, String parentProperty, K defaultParent, String childrenProperty) {
         map.forEach((id, item) -> {
-            K k = (K) getProperty(vo, keyProperty);
-            K pK = (K) getProperty(item, parentProperty);
+            K k = (K) FieldUtil.getProperty(vo, keyProperty);
+            K pK = (K) FieldUtil.getProperty(item, parentProperty);
             if (pK != null && pK.equals(k) && !pK.equals(defaultParent)) {
-                List<V> children = (List<V>) getProperty(vo, childrenProperty);
+                List<V> children = (List<V>) FieldUtil.getProperty(vo, childrenProperty);
                 if (children == null) {
                     children = new ArrayList<>();
                 }
                 children.add(addChildren(item, map, keyProperty, parentProperty, defaultParent, childrenProperty));
-                setProperty(vo, childrenProperty, children);
+                FieldUtil.setProperty(vo, childrenProperty, children);
             }
         });
         return vo;
@@ -324,8 +320,8 @@ public final class Lists {
         Map<K, V> map = Lists.toMap(list, keyProperty);
         List<V> result = new ArrayList<>();
         list.forEach(vo -> {
-            K k = (K) getProperty(vo, keyProperty);
-            K pK = (K) getProperty(vo, parentProperty);
+            K k = (K) FieldUtil.getProperty(vo, keyProperty);
+            K pK = (K) FieldUtil.getProperty(vo, parentProperty);
             if (!map.containsKey(pK) || (defaultParent != null && defaultParent.equals(k))) {
                 result.add(vo);
             }
@@ -334,57 +330,5 @@ public final class Lists {
             addChildren(vo, map, keyProperty, parentProperty, defaultParent, childrenProperty);
         });
         return result;
-    }
-
-    private static Object getProperty(Object bean, String propertyName) {
-        Method getter = getMethod(bean, propertyName, "get", 0);
-        if (getter != null) {
-            try {
-                return getter.invoke(bean);
-            } catch (Exception ignored) {
-            }
-        }
-        Field field = getField(bean, propertyName);
-        if (field != null) {
-            try {
-                field.setAccessible(true);
-                return field.get(bean);
-            } catch (Exception ignored) {
-            }
-        }
-        return null;
-    }
-
-    private static <V> void setProperty(Object bean, String propertyName, V value) {
-        Method method = getMethod(bean, propertyName, "set", 1);
-        if (method != null) {
-            try {
-                method.invoke(bean, value);
-            } catch (Exception ignored) {
-            }
-        }
-    }
-
-    private static Field getField(Object bean, String propertyName) {
-        for (Field f : bean.getClass().getDeclaredFields()) {
-            if (propertyName.equals(f.getName())) {
-                return f;
-            }
-        }
-        return null;
-    }
-
-    private static Method getMethod(Object bean, String propertyName, String pre, int paramLength) {
-        StringBuilder sb = new StringBuilder(pre).append(Character.toUpperCase(propertyName.charAt(0)));
-        if (propertyName.length() > 1) {
-            sb.append(propertyName.substring(1));
-        }
-        String getterName = sb.toString();
-        for (Method m : bean.getClass().getMethods()) {
-            if (getterName.equals(m.getName()) && m.getParameterTypes().length == paramLength) {
-                return m;
-            }
-        }
-        return null;
     }
 }

@@ -1,6 +1,6 @@
 package com.mahama.common.utils;
 
-import com.mahama.common.exception.ApplicationExceptionFunction;
+import com.mahama.common.exception.AssertionExceptionFunction;
 import com.mahama.common.exception.AssertionException;
 import com.mahama.common.exception.ServiceExceptionEnum;
 
@@ -19,7 +19,7 @@ public class Assert {
         throw new AssertionException(exceptionEnum);
     }
 
-    public static ApplicationExceptionFunction isTrue(boolean value) {
+    public static AssertionExceptionFunction isTrue(boolean value) {
         return (message) -> isTrue(value, message);
     }
 
@@ -39,7 +39,7 @@ public class Assert {
         isTrue(expression, msgTask.execute());
     }
 
-    public static ApplicationExceptionFunction isFalse(boolean value) {
+    public static AssertionExceptionFunction isFalse(boolean value) {
         return (message) -> isFalse(value, message);
     }
 
@@ -55,7 +55,7 @@ public class Assert {
         isTrue(!expression, msgTask.execute());
     }
 
-    public static ApplicationExceptionFunction isNull(Object object) {
+    public static AssertionExceptionFunction isNull(Object object) {
         return (message) -> isNull(object, message);
     }
 
@@ -71,7 +71,7 @@ public class Assert {
         isTrue(object == null, msgTask.execute());
     }
 
-    public static ApplicationExceptionFunction notNull(Object object) {
+    public static AssertionExceptionFunction notNull(Object object) {
         return (message) -> notNull(object, message);
     }
 
@@ -87,7 +87,7 @@ public class Assert {
         isTrue(object != null, msgTask.execute());
     }
 
-    public static ApplicationExceptionFunction isEmpty(String val) {
+    public static AssertionExceptionFunction isEmpty(String val) {
         return (message) -> isEmpty(val, message);
     }
 
@@ -99,7 +99,7 @@ public class Assert {
         isTrue(val == null || val.size() == 0, message);
     }
 
-    public static ApplicationExceptionFunction notEmpty(String val) {
+    public static AssertionExceptionFunction notEmpty(String val) {
         return (message) -> notEmpty(val, message);
     }
 

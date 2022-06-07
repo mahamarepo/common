@@ -11,8 +11,6 @@ import java.util.regex.Pattern;
 
 /**
  * 字符串工具类
- *
- * @author enilu
  */
 public class StringUtil {
     public static final String EMPTY = "";

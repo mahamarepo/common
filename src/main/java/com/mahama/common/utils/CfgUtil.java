@@ -13,9 +13,9 @@ public class CfgUtil {
         return getDefaultConfName(0L);
     }
 
-    public static String getDefaultConfName(long tenantId) {
-        if (tenantId > 0) {
-            return "conf_" + tenantId;
+    public static String getDefaultConfName(long id) {
+        if (id > 0) {
+            return "conf_" + id;
         } else {
             return "conf";
         }
