@@ -72,10 +72,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>bouncycastle</groupId>
-            <artifactId>bcprov-jdk15</artifactId>
-            <version>140</version>
-            <scope>compile</scope>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.71</version>
         </dependency>
         <dependency>
             <groupId>com.github.GitHub-Laziji</groupId>
