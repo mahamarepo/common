@@ -2,6 +2,7 @@ package com.mahama.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mahama.common.enumeration.HttpMethod;
+import com.mahama.common.enumeration.MimeType;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
@@ -12,16 +13,23 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class OkHttpUtil {
-    public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private String baseUrl = "";
+    private MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
     private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
-    public OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
 
     public OkHttpClient getHttpClient() {
         return httpClient;
     }
 
-    public String getBaseUrl() {
-        return "";
+    public OkHttpUtil url(String url) {
+        baseUrl = url;
+        return this;
+    }
+
+    public OkHttpUtil mediaType(MimeType type) {
+        mediaType = MediaType.parse(type.getValue() + "; charset=utf-8");
+        return this;
     }
 
     public class MyCookieJar implements CookieJar {
@@ -56,6 +64,7 @@ public class OkHttpUtil {
         httpClient = new OkHttpClient.Builder()
                 .connectTimeout(40, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
+                .cookieJar(new MyCookieJar())
                 .socketFactory(sslSocketFactory)
                 .build();
     }
@@ -104,13 +113,13 @@ public class OkHttpUtil {
     public Request getRequest(String url, HttpMethod method, JSONObject body) {
         if (body == null)
             body = new JSONObject();
-        RequestBody requestBody = RequestBody.create(JSON, body.toString());
+        RequestBody requestBody = RequestBody.create(body.toString(), mediaType);
         if (!okhttp3.internal.http.HttpMethod.permitsRequestBody(method.getValue())) {
             url = url + getGetUrl(body);
             requestBody = null;
         }
         return new Request.Builder()
-                .url(getBaseUrl() + url)
+                .url(baseUrl + url)
                 .method(method.getValue(), requestBody)
                 .build();
     }
@@ -118,13 +127,13 @@ public class OkHttpUtil {
     public Request getRequest(String url, HttpMethod method, JSONObject body, Headers headers) {
         if (body == null)
             body = new JSONObject();
-        RequestBody requestBody = RequestBody.create(JSON, body.toString());
+        RequestBody requestBody = RequestBody.create(body.toString(), mediaType);
         if (!okhttp3.internal.http.HttpMethod.permitsRequestBody(method.getValue())) {
             url = url + getGetUrl(body);
             requestBody = null;
         }
         return new Request.Builder()
-                .url(getBaseUrl() + url)
+                .url(baseUrl + url)
                 .method(method.getValue(), requestBody)
                 .headers(headers)
                 .build();

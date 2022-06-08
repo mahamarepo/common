@@ -43,8 +43,8 @@ public class ModBusUtil {
     }
 
     public static byte[] getReadResult2Hex(byte[] data) {
-        var crc = CRCUtil.getCrc16(ByteUtil.subBytes(data, 0, data.length - 2));
-        var dataCrc = ByteUtil.subBytes(data, data.length - 2, 2);
+        byte[] crc = CRCUtil.getCrc16(ByteUtil.subBytes(data, 0, data.length - 2));
+        byte[] dataCrc = ByteUtil.subBytes(data, data.length - 2, 2);
         if (ByteUtil.bytesToHexString(crc).equals(ByteUtil.bytesToHexString(dataCrc))) {
             return ByteUtil.subBytes(data, 3, data.length - 3 - 2);
         } else {

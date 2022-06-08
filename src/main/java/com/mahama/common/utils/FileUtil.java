@@ -5,7 +5,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-public class FileUtil extends FileUtils {
+public class FileUtil {
     public static void copyFile(File srcFile, File destDir, String destFileName) throws IOException {
         FileUtils.copyFile(srcFile, new File(destDir.getPath() + "\\" + destFileName));
     }

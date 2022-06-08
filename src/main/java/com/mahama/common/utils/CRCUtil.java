@@ -68,7 +68,7 @@ public class CRCUtil {
 
     public static void main(String[] args) {
         byte[] bytes = new byte[]{0x55, 0x01, 0x61, 0x00, 0x00, 0x00, 0x03};
-        var aaa = getSumCheck(bytes);
+        byte[] aaa = getSumCheck(bytes);
         System.out.println(ByteUtil.bytesToHexString(aaa));
     }
 }

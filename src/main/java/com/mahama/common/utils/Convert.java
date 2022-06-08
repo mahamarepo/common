@@ -126,7 +126,7 @@ public class Convert {
     }
 
     public static List<String> toStrList(String split, String str) {
-        return List.of(toStrArray(split, str));
+        return Lists.newArrayList(toStrArray(split, str));
     }
 
     /**

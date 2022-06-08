@@ -13,10 +13,6 @@ public final class Lists {
 
     /**
      * 碾平集合咯，主要针对集合元素为集合的情况有效果
-     *
-     * @param list
-     * @param <T>
-     * @return
      */
     @SuppressWarnings("unchecked")
     public static <T> List<T> flatten(List<?> list) {
@@ -34,10 +30,6 @@ public final class Lists {
 
     /**
      * 压缩集合，去掉集合中的null记录
-     *
-     * @param list
-     * @param <T>
-     * @return
      */
     public static <T> List<T> compact(List<T> list) {
         List<T> result = new ArrayList<T>();
@@ -51,12 +43,6 @@ public final class Lists {
 
     /**
      * 提取集合中指定属性值
-     *
-     * @param list
-     * @param property
-     * @param <T>
-     * @param <R>
-     * @return
      */
     public static <T, R> List<R> map(List<T> list, String property) {
         List<R> result = new ArrayList<R>();
@@ -75,12 +61,6 @@ public final class Lists {
 
     /**
      * 将集合转换为map
-     *
-     * @param list
-     * @param keyProperty
-     * @param <K>
-     * @param <V>
-     * @return
      */
     public static <K, V> Map<K, V> toMap(List<V> list, String keyProperty) {
         Map<K, V> map = new HashMap<K, V>(100);
@@ -118,12 +98,6 @@ public final class Lists {
 
     /**
      * 移除与value不想等的值，原集合不发生变化
-     *
-     * @param list
-     * @param property
-     * @param value
-     * @param <T>
-     * @return
      */
     public static <T> List<T> filter(List<T> list, String property, Object value) {
         List<T> result = new ArrayList<T>();
@@ -162,10 +136,6 @@ public final class Lists {
 
     /**
      * 移除与value相等的值, 原数组不发生变化.
-     *
-     * @param list
-     * @param value
-     * @return
      */
     public static <T> List<T> without(List<T> list, T value) {
         List<T> result = new ArrayList<T>();
@@ -181,10 +151,6 @@ public final class Lists {
 
     /**
      * 对集合去重，原集合不发生变化
-     *
-     * @param input
-     * @param <T>
-     * @return
      */
     public static <T> List<T> uniq(List<T> input) {
         LinkedHashMap<T, T> map = new LinkedHashMap<>();
@@ -200,14 +166,11 @@ public final class Lists {
      * @param input       要排序的集合
      * @param keyProperty 排序的属性
      * @param keys        给定的键值集合
-     * @param <K>
-     * @param <T>
-     * @return
      */
     public static <K, T> List<T> sortBy(List<T> input, String keyProperty,
                                         List<K> keys) {
         if (input.isEmpty()) {
-            return new ArrayList();
+            return new ArrayList<T>();
         }
 
         Map<K, T> map = toMap(input, keyProperty);
@@ -223,12 +186,6 @@ public final class Lists {
 
     /**
      * 对集合进行分组
-     *
-     * @param input
-     * @param keyProperty
-     * @param <K>
-     * @param <V>
-     * @return
      */
     public static <K, V> Map<K, List<V>> group(List<V> input, String keyProperty) {
         Map<K, List<V>> result = new HashMap<>(100);
@@ -237,11 +194,7 @@ public final class Lists {
 
             try {
                 K k = (K) FieldUtil.getProperty(v, keyProperty);
-                List<V> list = result.get(k);
-                if (list == null) {
-                    list = new ArrayList<>();
-                    result.put(k, list);
-                }
+                List<V> list = result.computeIfAbsent(k, k1 -> new ArrayList<>());
                 list.add(v);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -254,11 +207,6 @@ public final class Lists {
 
     /**
      * 将数组按n个一份拆分.
-     *
-     * @param <T>
-     * @param input
-     * @param n
-     * @return
      */
     public static <T> List<List<T>> group(List<T> input, int n) {
         if (n <= 0) {
@@ -284,9 +232,8 @@ public final class Lists {
         if (parent == null || child == null) {
             return false;
         }
-        Iterator iter = child.iterator();
-        while (iter.hasNext()) {
-            return parent.contains(iter.next());
+        for (Object o : child) {
+            return parent.contains(o);
         }
         return false;
     }
@@ -294,9 +241,7 @@ public final class Lists {
     @SafeVarargs
     public static <V> List<V> newArrayList(V... vs) {
         List<V> list = new ArrayList<V>();
-        for (V v : vs) {
-            list.add(v);
-        }
+        Collections.addAll(list, vs);
         return list;
     }
 

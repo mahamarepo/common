@@ -43,7 +43,8 @@ public class ByteUtil {
         if (isInt) {
             for (byte b : src) {
                 String hv = Integer.toHexString(b);
-                stringBuilder.append("0".repeat(8 - hv.length()));
+//                stringBuilder.append("0".repeat(8 - hv.length()));
+                stringBuilder.append(new String(new char[8 - hv.length()]).replace("\0", "0"));
                 stringBuilder.append(hv);
             }
         } else {
@@ -179,7 +180,7 @@ public class ByteUtil {
      * @param src 数据源
      */
     public static float bytesToFloat(byte[] src) {
-        var dst = bytesToFloat(src, 6);
+        BigDecimal dst = bytesToFloat(src, 6);
         if (dst == null) {
             return 0.0f;
         }
@@ -307,7 +308,7 @@ public class ByteUtil {
     }
 
     public static List<Integer> shortBytesToIntList(byte[] src) {
-        List<Integer> list = new java.util.ArrayList<>(List.of());
+        List<Integer> list = Lists.newArrayList();
         for (int i = 0; i < src.length; i = i + 2) {
             list.add(bytesToInt(new byte[]{src[i], src[i + 1]}));
         }
