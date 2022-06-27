@@ -30,4 +30,20 @@ public class ReflectionUtil {
         }
         return (Class<T>) params[index];
     }
+	
+	public static <T> Class<T> getInterfacesGenericType(final Class<?> clazz, final int infIndex, final int index) {
+		Type genType = clazz.getGenericInterfaces()[infIndex];
+        if (!(genType instanceof ParameterizedType)) {
+            return null;
+        }
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        if (index >= params.length || index < 0) {
+            return null;
+        }
+        if (!(params[index] instanceof Class)) {
+            return null;
+        }
+        return (Class<T>) params[index];
+    }
+
 }
