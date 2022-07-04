@@ -1,18 +1,21 @@
 package com.mahama.common.utils;
 
+import com.mahama.common.builder.ExcelWriterBuilder;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class ExcelUtil {
     public static class ExcelRow extends HashMap<Integer, Object> {
         public <T> T cell(Integer cell) {
-            return (T)get(cell);
+            return (T) get(cell);
         }
     }
 
@@ -78,5 +81,13 @@ public class ExcelUtil {
             }
         }
         return value;
+    }
+
+    public static ExcelWriterBuilder write(OutputStream outputStream) {
+        return new ExcelWriterBuilder(outputStream);
+    }
+
+    public static ExcelWriterBuilder write(String filePath) throws IOException {
+        return new ExcelWriterBuilder(filePath);
     }
 }
