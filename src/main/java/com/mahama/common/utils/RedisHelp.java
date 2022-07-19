@@ -16,6 +16,7 @@ public class RedisHelp {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final String keyPrefix;
+    private boolean disabled;
 
     private static final String idKey = "id_";
 
@@ -23,9 +24,18 @@ public class RedisHelp {
         return idKey;
     }
 
+    public RedisHelp(RedisTemplate<String, Object> redisTemplate) {
+        this(redisTemplate, "");
+    }
+
     public RedisHelp(RedisTemplate<String, Object> redisTemplate, String keyPrefix) {
         this.redisTemplate = redisTemplate;
         this.keyPrefix = keyPrefix;
+    }
+
+    public RedisHelp disabled(boolean _disabled) {
+        this.disabled = _disabled;
+        return this;
     }
 
     public <R> R query(RedisTask<R> redisTask) {
@@ -45,6 +55,9 @@ public class RedisHelp {
     }
 
     public <R> R query(String keyAppend, RedisTask<R> redisTask, long timeout, TimeUnit unit) {
+        if (disabled) {
+            return redisTask.execute();
+        }
         if (StringUtil.isNullOrEmpty(keyAppend) || timeout == 0) {
             return redisTask.execute();
         } else if (timeout < 0) {
@@ -103,12 +116,19 @@ public class RedisHelp {
     }
 
     public <R> R execute(String keyAppend, RedisTask<R> redisTask) {
+        if (disabled) {
+            return redisTask.execute();
+        }
         R result = redisTask.execute();
         clearCacheKey(keyAppend);
         return result;
     }
 
     public void execute(String keyAppend, RedisVoidTask redisVoidTask) {
+        if (disabled) {
+            redisVoidTask.execute();
+            return;
+        }
         redisVoidTask.execute();
         clearCacheKey(keyAppend);
     }
@@ -124,6 +144,9 @@ public class RedisHelp {
      * 删除单条redis缓存
      */
     public void deleteCacheKey(String key) {
+        if (disabled) {
+            return;
+        }
         redisTemplate.delete(getRealKeyPrefix(key));
     }
 
@@ -160,6 +183,9 @@ public class RedisHelp {
      *                <B>h[ae]llo</B> 匹配 hello 和 hallo ，但不匹配 hillo 。
      */
     public void clearCache(String pattern) {
+        if (disabled) {
+            return;
+        }
         Set<String> keys = redisTemplate.keys(getRealKeyPrefix(pattern));
         if (keys != null)
             redisTemplate.delete(keys);
@@ -176,12 +202,18 @@ public class RedisHelp {
      * 设置有时效的缓存
      */
     public <V> void setRedisCache(String key, V value, long timeout, TimeUnit unit) {
+        if (disabled) {
+            return;
+        }
         if (value != null) {
             redisTemplate.opsForValue().set(getRealKeyPrefix(key), value, timeout, unit);
         }
     }
 
     public <V> V getRedisCache(String key) {
+        if (disabled) {
+            return null;
+        }
         try {
             String realKey = getRealKeyPrefix(key);
             if (redisTemplate.hasKey(realKey)) {
