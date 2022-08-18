@@ -114,4 +114,9 @@ public class Assert {
     public static <T> void notEmpty(List<T> val, String message) {
         isTrue(val != null && val.size() > 0, message);
     }
+
+    public static <T> void notEmpty(List<T> val, ServiceExceptionEnum exceptionEnum) {
+        isTrue(val != null && val.size() > 0, exceptionEnum);
+    }
+
 }
