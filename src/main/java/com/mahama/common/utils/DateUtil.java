@@ -52,7 +52,7 @@ public class DateUtil {
     }
 
     public static Date toDayEnd(Date date) {
-        long current = date.getTime();
+        long current = date.getTime() + 1000 * 3600 * 24;
         long zero = current - (current + TimeZone.getDefault().getRawOffset()) % (1000 * 3600 * 24) - 1;
         return new Date(zero);
     }
