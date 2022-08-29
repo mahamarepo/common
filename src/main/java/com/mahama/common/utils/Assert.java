@@ -7,10 +7,6 @@ import com.mahama.common.exception.ServiceExceptionEnum;
 import java.util.List;
 
 public class Assert {
-    public interface MsgTask {
-        String execute();
-    }
-
     public static void err(String message) {
         throw new AssertionException(message);
     }
@@ -35,10 +31,6 @@ public class Assert {
         }
     }
 
-    public static void isTrue(boolean expression, MsgTask msgTask) {
-        isTrue(expression, msgTask.execute());
-    }
-
     public static AssertionExceptionFunction isFalse(boolean value) {
         return (message) -> isFalse(value, message);
     }
@@ -49,10 +41,6 @@ public class Assert {
 
     public static void isFalse(boolean expression, ServiceExceptionEnum exceptionEnum) {
         isTrue(!expression, exceptionEnum);
-    }
-
-    public static void isFalse(boolean expression, MsgTask msgTask) {
-        isTrue(!expression, msgTask.execute());
     }
 
     public static AssertionExceptionFunction isNull(Object object) {
@@ -67,10 +55,6 @@ public class Assert {
         isTrue(object == null, exceptionEnum);
     }
 
-    public static void isNull(Object object, MsgTask msgTask) {
-        isTrue(object == null, msgTask.execute());
-    }
-
     public static AssertionExceptionFunction notNull(Object object) {
         return (message) -> notNull(object, message);
     }
@@ -81,10 +65,6 @@ public class Assert {
 
     public static void notNull(Object object, ServiceExceptionEnum exceptionEnum) {
         isTrue(object != null, exceptionEnum);
-    }
-
-    public static void notNull(Object object, MsgTask msgTask) {
-        isTrue(object != null, msgTask.execute());
     }
 
     public static AssertionExceptionFunction isEmpty(String val) {
