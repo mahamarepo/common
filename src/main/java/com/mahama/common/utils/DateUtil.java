@@ -29,6 +29,10 @@ public class DateUtil {
 
     private static final Map<String, ThreadLocal<SimpleDateFormat>> POOL = new HashMap<String, ThreadLocal<SimpleDateFormat>>();
 
+    public static Date now() {
+        return new Date();
+    }
+
     public static Date toDayStart() {
         long current = System.currentTimeMillis();
         long zero = current - (current + TimeZone.getDefault().getRawOffset()) % (1000 * 3600 * 24);
@@ -340,6 +344,25 @@ public class DateUtil {
     }
 
     /**
+     * 得到n天之后的日期
+     */
+    public static Date getAfterMonthDate(int month) {
+        Calendar canlendar = Calendar.getInstance();
+        canlendar.add(Calendar.MONTH, month);
+        return canlendar.getTime();
+    }
+
+    /**
+     * 得到n天之后的日期
+     */
+    public static Date getAfterMonthDate(Date date, int month) {
+        Calendar canlendar = Calendar.getInstance();
+        canlendar.setTime(date);
+        canlendar.add(Calendar.MONTH, month);
+        return canlendar.getTime();
+    }
+
+    /**
      * 获取范围时间内所有日期
      *
      * @param begin   开始时间
@@ -351,7 +374,7 @@ public class DateUtil {
         if (StringUtil.isNullOrEmpty(pattern)) {
             pattern = "yyyy-MM-dd";
         }
-        return getBetween(begin,end,pattern,Calendar.DAY_OF_MONTH);
+        return getBetween(begin, end, pattern, Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -366,7 +389,7 @@ public class DateUtil {
         if (StringUtil.isNullOrEmpty(pattern)) {
             pattern = "yyyy-MM";
         }
-        return getBetween(begin,end,pattern,Calendar.MONTH);
+        return getBetween(begin, end, pattern, Calendar.MONTH);
     }
 
     /**
@@ -381,13 +404,13 @@ public class DateUtil {
         if (StringUtil.isNullOrEmpty(pattern)) {
             pattern = "yyyy";
         }
-        return getBetween(begin,end,pattern,Calendar.YEAR);
+        return getBetween(begin, end, pattern, Calendar.YEAR);
     }
 
-    private static List<String> getBetween(Date begin, Date end, String pattern,int field){
+    private static List<String> getBetween(Date begin, Date end, String pattern, int field) {
         long beginTime = begin.getTime();
         long zero = beginTime - (beginTime + TimeZone.getDefault().getRawOffset()) % (1000 * 3600 * 24);
-        begin=new Date(zero);
+        begin = new Date(zero);
         List<String> list = new ArrayList<>();
         Calendar calBegin = Calendar.getInstance();
         calBegin.setTime(begin);
