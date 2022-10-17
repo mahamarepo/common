@@ -1,6 +1,7 @@
 package com.mahama.common.enumeration;
 
 public enum MimeType {
+    form("application/x-www-form-urlencoded"),
     download("application/x-download"),
     stream("application/octet-stream"),
     json("application/json"),

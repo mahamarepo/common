@@ -191,9 +191,11 @@ public final class Lists {
         Map<K, List<V>> result = new HashMap<>(100);
 
         for (V v : input) {
-
             try {
                 K k = (K) FieldUtil.getProperty(v, keyProperty);
+                if (k == null) {
+                    continue;
+                }
                 List<V> list = result.computeIfAbsent(k, k1 -> new ArrayList<>());
                 list.add(v);
             } catch (Exception e) {
@@ -224,6 +226,18 @@ public final class Lists {
             }
             result.add(items);
         }
+        return result;
+    }
+
+    /**
+     * 对集合进行分组
+     */
+    public static <K, V> Map<K, Integer> groupToCount(List<V> input, String keyProperty) {
+        Map<K, List<V>> groupMap = group(input, keyProperty);
+        Map<K, Integer> result = new HashMap<>(100);
+        groupMap.forEach((k, items) -> {
+            result.put(k, items.size());
+        });
         return result;
     }
 

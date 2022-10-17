@@ -1,5 +1,6 @@
 package com.mahama.common.utils;
 
+import com.alibaba.excel.EasyExcel;
 import com.mahama.common.builder.ExcelWriterBuilder;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -7,10 +8,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 
 public class ExcelUtil {
     public static class ExcelRow extends HashMap<Integer, Object> {
@@ -55,10 +55,6 @@ public class ExcelUtil {
         Object value = null;
         if (cell != null) {
             switch (cell.getCellType()) {
-                case STRING:
-                    //String类型返回String数据
-                    value = cell.getStringCellValue();
-                    break;
                 case NUMERIC:
                     //日期数据返回LONG类型的时间戳
                     if ("yyyy\"年\"m\"月\"d\"日\";@".equals(cell.getCellStyle().getDataFormatString())) {
@@ -75,8 +71,9 @@ public class ExcelUtil {
                 case BLANK:
                     //空单元格
                     break;
+                case STRING:
                 default:
-                    value = cell.toString();
+                    value = cell.getStringCellValue();
                     break;
             }
         }
@@ -89,5 +86,49 @@ public class ExcelUtil {
 
     public static ExcelWriterBuilder write(String filePath) throws IOException {
         return new ExcelWriterBuilder(filePath);
+    }
+
+    public static <T> void easyWrite(String filePath, String sheetName, List<T> list) throws IOException {
+        File file = new File(filePath);
+        easyWrite(new FileOutputStream(file), sheetName, list);
+    }
+
+    public static <T> void easyWrite(OutputStream outputStream, String sheetName, List<T> list) {
+        easyWrite(outputStream, sheetName, list, false);
+    }
+
+    public static <T> void easyWrite(OutputStream outputStream, String sheetName, List<T> list, boolean noTitle) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        com.alibaba.excel.write.builder.ExcelWriterBuilder writerBuilder;
+        if (noTitle) {
+            writerBuilder = EasyExcel.write(outputStream);
+        } else {
+            writerBuilder = EasyExcel.write(outputStream, list.get(0).getClass());
+        }
+        writerBuilder.sheet(sheetName).doWrite(list);
+    }
+
+    public static <T> void easyWrite(String filePath, Integer sheetNo, List<T> list) throws IOException {
+        File file = new File(filePath);
+        easyWrite(new FileOutputStream(file), sheetNo, list);
+    }
+
+    public static <T> void easyWrite(OutputStream outputStream, Integer sheetNo, List<T> list) {
+        easyWrite(outputStream, sheetNo, list, false);
+    }
+
+    public static <T> void easyWrite(OutputStream outputStream, Integer sheetNo, List<T> list, boolean noTitle) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        com.alibaba.excel.write.builder.ExcelWriterBuilder writerBuilder;
+        if (noTitle) {
+            writerBuilder = EasyExcel.write(outputStream);
+        } else {
+            writerBuilder = EasyExcel.write(outputStream, list.get(0).getClass());
+        }
+        writerBuilder.sheet(sheetNo).doWrite(list);
     }
 }

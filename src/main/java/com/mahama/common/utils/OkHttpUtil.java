@@ -52,6 +52,14 @@ public class OkHttpUtil {
         return new OkHttpUtil();
     }
 
+    public static OkHttpUtil me(Integer timeout, TimeUnit unit) {
+        return new OkHttpUtil(timeout, unit);
+    }
+
+    public static OkHttpUtil me(SSLSocketFactory sslSocketFactory, Integer timeout, TimeUnit unit) {
+        return new OkHttpUtil(sslSocketFactory, timeout, unit);
+    }
+
     public OkHttpUtil() {
         httpClient = new OkHttpClient.Builder()
                 .connectTimeout(40, TimeUnit.SECONDS)
@@ -64,6 +72,23 @@ public class OkHttpUtil {
         httpClient = new OkHttpClient.Builder()
                 .connectTimeout(40, TimeUnit.SECONDS)
                 .readTimeout(40, TimeUnit.SECONDS)
+                .cookieJar(new MyCookieJar())
+                .socketFactory(sslSocketFactory)
+                .build();
+    }
+
+    public OkHttpUtil(Integer timeout, TimeUnit unit) {
+        httpClient = new OkHttpClient.Builder()
+                .connectTimeout(timeout, unit)
+                .readTimeout(timeout, unit)
+                .cookieJar(new MyCookieJar())
+                .build();
+    }
+
+    public OkHttpUtil(SSLSocketFactory sslSocketFactory, Integer timeout, TimeUnit unit) {
+        httpClient = new OkHttpClient.Builder()
+                .connectTimeout(timeout, unit)
+                .readTimeout(timeout, unit)
                 .cookieJar(new MyCookieJar())
                 .socketFactory(sslSocketFactory)
                 .build();

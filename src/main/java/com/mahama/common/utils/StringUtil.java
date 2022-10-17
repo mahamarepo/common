@@ -94,7 +94,7 @@ public class StringUtil {
         return obj == null ? defaultValue : String.valueOf(obj);
     }
 
-    public static boolean contains(String sec, String str){
+    public static boolean contains(String sec, String str) {
         return str.contains(sec);
     }
 
@@ -108,7 +108,7 @@ public class StringUtil {
      * abcdefgh 2 3 -> c <br>
      * abcdefgh 2 -3 -> cde <br>
      *
-     * @param str    String
+     * @param str       String
      * @param fromIndex 开始的index（包括）
      * @param toIndex   结束的index（不包括）
      * @return 字串
@@ -187,6 +187,22 @@ public class StringUtil {
                 sb.append(Character.toLowerCase(c));
             } else {
                 sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String underlineToCamel(String str) {
+        if (isNullOrEmpty(str)) {
+            return str;
+        }
+        String[] keys = str.split("_");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < keys.length; i++) {
+            if (i == 0) {
+                sb.append(keys[i]);
+            } else {
+                sb.append(firstCharToUpperCase(keys[i]));
             }
         }
         return sb.toString();
@@ -306,7 +322,6 @@ public class StringUtil {
 
         return string.toString();
     }
-
 
 
     /**
