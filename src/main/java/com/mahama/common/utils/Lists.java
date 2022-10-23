@@ -175,11 +175,15 @@ public final class Lists {
 
         Map<K, T> map = toMap(input, keyProperty);
         List<T> result = new ArrayList<T>();
-        for (K k : keys) {
-            T t = map.get(k);
-            if (t != null) {
-                result.add(t);
+        if (keys != null && keys.size() > 0) {
+            for (K k : keys) {
+                T t = map.get(k);
+                if (t != null) {
+                    result.add(t);
+                }
             }
+        } else {
+            map.forEach((k, t) -> result.add(t));
         }
         return result;
     }
