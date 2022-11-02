@@ -109,9 +109,6 @@ public class DateUtil {
         return formatDate(new Date(), "yyyy-MM-dd 23:59:59");
     }
 
-    /**
-     * 获取YYYY-MM-DD格式
-     */
     public static String getDay(Date date) {
         return formatDate(date, "yyyy-MM-dd");
     }
@@ -125,17 +122,18 @@ public class DateUtil {
         return formatDate(date, "yyyy-MM-dd 23:59:59");
     }
 
+    public static String getMonth() {
+        return formatDate(new Date(), "yyyy-MM");
+    }
 
-    /**
-     * 获取YYYYMMDD格式
-     */
+    public static String getMonth(Date date) {
+        return formatDate(date, "yyyy-MM");
+    }
+
     public static String getDays() {
         return formatDate(new Date(), "yyyyMMdd");
     }
 
-    /**
-     * 获取YYYYMMDD格式
-     */
     public static String getDays(Date date) {
         return formatDate(date, "yyyyMMdd");
     }
@@ -150,15 +148,6 @@ public class DateUtil {
         cal.setTime(date);
         return cal.get(Calendar.YEAR);
     }
-
-    public static String getMonth() {
-        return formatDate(new Date(), "yyyy-MM");
-    }
-
-    public static String getMonth(Date date) {
-        return formatDate(date, "yyyy-MM");
-    }
-
 
     public static int getMonthInt() {
         Calendar cal = Calendar.getInstance();
@@ -180,6 +169,42 @@ public class DateUtil {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.DATE);
+    }
+
+    public static int getDayOfYearInt() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.DAY_OF_YEAR);
+    }
+
+
+    public static int getDayOfYearInt(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public static int getWeekInt() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.WEEK_OF_MONTH);
+    }
+
+
+    public static int getWeekInt(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.WEEK_OF_MONTH);
+    }
+
+    public static int getWeekOfYearInt() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.WEEK_OF_YEAR);
+    }
+
+
+    public static int getWeekOfYearInt(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.WEEK_OF_YEAR);
     }
 
     /**
