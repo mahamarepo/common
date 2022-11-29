@@ -167,25 +167,21 @@ public final class Lists {
      * @param keyProperty 排序的属性
      * @param keys        给定的键值集合
      */
-    public static <K, T> List<T> sortBy(List<T> input, String keyProperty,
-                                        List<K> keys) {
+    public static <K, T> List<T> sortBy(List<T> input, String keyProperty, List<K> keys) {
         if (input.isEmpty()) {
-            return new ArrayList<T>();
-        }
+            return Lists.newArrayList();
+        } else {
+            Map<K, List<T>> map = Lists.group(input, keyProperty);
+            List<T> result = Lists.newArrayList();
 
-        Map<K, T> map = toMap(input, keyProperty);
-        List<T> result = new ArrayList<T>();
-        if (keys != null && keys.size() > 0) {
             for (K k : keys) {
-                T t = map.get(k);
+                List<T> t = map.get(k);
                 if (t != null) {
-                    result.add(t);
+                    result.addAll(t);
                 }
             }
-        } else {
-            map.forEach((k, t) -> result.add(t));
+            return result;
         }
-        return result;
     }
 
     /**

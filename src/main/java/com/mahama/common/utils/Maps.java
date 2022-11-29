@@ -57,6 +57,23 @@ public final class Maps {
         return map;
     }
 
+
+    public static <K, V> Map<V, V> toMap(List<Map<K, V>> list, K keyProperty, K valueProperty) {
+        Map<V, V> map = new HashMap<>();
+        for (Map<K, V> m : list) {
+
+            try {
+                V k = m.get(keyProperty);
+                V v = m.get(valueProperty);
+                map.put(k, v);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return map;
+    }
+
     public static <K, V> Map<K, V> filter(Map<K, V> kvMap,String regex){
         return com.google.common.collect.Maps.filterEntries(kvMap,map -> map.getKey().toString().matches(regex));
     }
