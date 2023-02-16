@@ -1,14 +1,12 @@
 package com.mahama.common.builder;
 
 import com.mahama.common.utils.StringUtil;
+import lombok.SneakyThrows;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -28,6 +26,13 @@ public class ExcelWriterBuilder {
     private final OutputStream outputStream;
     private XSSFSheet xssfSheet = null;
     private int rowIndex;
+
+
+    @SneakyThrows
+    public ExcelWriterBuilder(InputStream inputStream, OutputStream outputStream) {
+        this.xssfWorkbook = new XSSFWorkbook(inputStream);
+        this.outputStream = outputStream;
+    }
 
     public ExcelWriterBuilder(OutputStream outputStream) {
         this.xssfWorkbook = new XSSFWorkbook();
@@ -56,13 +61,13 @@ public class ExcelWriterBuilder {
     }
 
     public ExcelWriterBuilder changeSheet(int index) {
-        xssfSheet=xssfWorkbook.getSheetAt(index);
+        xssfSheet = xssfWorkbook.getSheetAt(index);
         rowIndex = 0;
         return this;
     }
 
     public ExcelWriterBuilder changeSheet(String sheetName) {
-        xssfSheet=xssfWorkbook.getSheet(sheetName);
+        xssfSheet = xssfWorkbook.getSheet(sheetName);
         rowIndex = 0;
         return this;
     }

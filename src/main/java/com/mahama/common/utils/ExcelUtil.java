@@ -84,6 +84,10 @@ public class ExcelUtil {
         return new ExcelWriterBuilder(outputStream);
     }
 
+    public static ExcelWriterBuilder write(InputStream inputStream, OutputStream outputStream) {
+        return new ExcelWriterBuilder(inputStream, outputStream);
+    }
+
     public static ExcelWriterBuilder write(String filePath) throws IOException {
         return new ExcelWriterBuilder(filePath);
     }
