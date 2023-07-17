@@ -188,7 +188,7 @@ public final class Lists {
      * 对集合进行分组
      */
     public static <K, V> Map<K, List<V>> group(List<V> input, String keyProperty) {
-        Map<K, List<V>> result = new HashMap<>(100);
+        Map<K, List<V>> result = new HashMap<>(32);
 
         for (V v : input) {
             try {
@@ -204,6 +204,19 @@ public final class Lists {
 
         }
 
+        return result;
+    }
+
+    public static <K, V> Map<K,List<Map<K, V>>> groupMap(List<Map<K, V>> input, K key) {
+        Map<K, List<Map<K, V>>> result = new HashMap<>(32);
+        for (Map<K, V> v : input) {
+            try {
+                List<Map<K, V>> list = result.computeIfAbsent(key, i -> new ArrayList<>());
+                list.add(v);
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
+        }
         return result;
     }
 
@@ -234,7 +247,7 @@ public final class Lists {
      */
     public static <K, V> Map<K, Integer> groupToCount(List<V> input, String keyProperty) {
         Map<K, List<V>> groupMap = group(input, keyProperty);
-        Map<K, Integer> result = new HashMap<>(100);
+        Map<K, Integer> result = new HashMap<>(32);
         groupMap.forEach((k, items) -> {
             result.put(k, items.size());
         });
